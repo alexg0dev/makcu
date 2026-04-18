@@ -485,7 +485,7 @@ async def delete_config_file_action(filename: str):
     delete_config_file(filename)
     if app_state.get_current_config_file() == filename:
         app_state.set_current_config_file(DEFAULT_CONFIG_FILE)
-        app_state.set_selected_gun_name("")
+        app_state.set_selected_operator_name("")
         restore_selected_config()
         persist_runtime_state()
         save_app_state()
@@ -592,7 +592,7 @@ async def delete_operator_config(operator_name: str):
     
 @app.get("/", response_class=HTMLResponse)
 async def get():
-    return """
+    return HTMLResponse(content="""
     <!DOCTYPE html>
     <html>
     <head>
@@ -1217,6 +1217,10 @@ async def get():
                     if (!selectedFile) return alert('Please select a config file to delete.');
                     if (selectedFile === 'r6_operators.json') return alert('Cannot delete default config.');
                     if (confirm('Delete config file "' + selectedFile + '" and all its operators?')) {
+                        fetch('/config-files/' + encodeURIComponent(selectedFile), { method: 'DELETE' }).then(r => r.json()).then(data => {
+                            alert(data.message || data.detail);
+                            fetchConfigFiles();
+                            fetchOperators();
                         }).catch(() => alert('Failed to delete config.'));
                     }
                 }
@@ -1416,7 +1420,11 @@ async def get():
         </script>
     </body>
     </html>
-    """
+    """, headers={
+        "Cache-Control": "no-store, no-cache, must-revalidate, max-age=0",
+        "Pragma": "no-cache",
+        "Expires": "0",
+    })
 def get_local_ip():
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
