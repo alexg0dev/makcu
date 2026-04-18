@@ -16,8 +16,10 @@ from mouse.makcu import makcu_controller
 CONFIG_DIR = os.path.join(os.path.dirname(__file__), 'configs')
 os.makedirs(CONFIG_DIR, exist_ok=True)
 
-DEFAULT_CONFIG_FILE = "r6.json"
+DEFAULT_CONFIG_FILE = "r6_operators.json"
 CONFIG_FILE = os.path.join(CONFIG_DIR, DEFAULT_CONFIG_FILE)
+APP_STATE_FILE = os.path.join(os.path.dirname(__file__), 'app_state.json')
+INTERNAL_CONFIG_STATE_KEY = "__app_state__"
 
 class GunConfig(BaseModel):
     gun_name: str = Field(..., min_length=1, max_length=50, pattern=r'^[a-zA-Z0-9_\- ]+$')
@@ -25,6 +27,13 @@ class GunConfig(BaseModel):
     horizontal_value: float = Field(default=0, ge=-300, le=300)
     horizontal_delay_ms: int = Field(default=500, ge=0, le=5000)
     horizontal_duration_ms: int = Field(default=2000, ge=0, le=10000)
+
+class OperatorConfig(BaseModel):
+    operator_name: str = Field(..., min_length=1, max_length=50, pattern=r'^[a-zA-Z0-9_\- ]+$')
+    primary_gun: str = Field(..., min_length=1, max_length=50)
+    primary_config: dict = Field(...)
+    secondary_gun: str = Field(..., min_length=1, max_length=50)
+    secondary_config: dict = Field(...)
 
 def get_config_path(filename):
     return os.path.join(CONFIG_DIR, filename)
@@ -51,6 +60,23 @@ def write_configs(configs, config_file=None):
             json.dump(configs, f, indent=4)
     except OSError as e:
         print(f"[CONFIG] Error writing configs: {e}")
+
+def read_app_state_file():
+    if not os.path.exists(APP_STATE_FILE):
+        return {}
+    try:
+        with open(APP_STATE_FILE, 'r') as f:
+            return json.load(f)
+    except (json.JSONDecodeError, OSError) as e:
+        print(f"[CONFIG] Error reading app state: {e}")
+        return {}
+
+def write_app_state_file(state):
+    try:
+        with open(APP_STATE_FILE, 'w') as f:
+            json.dump(state, f, indent=4)
+    except OSError as e:
+        print(f"[CONFIG] Error writing app state: {e}")
 
 def list_config_files():
     try:
@@ -88,13 +114,18 @@ VALID_TOGGLE_BUTTONS = ["MMB", "M4", "M5"]
 
 class AppState:
     def __init__(self):
+        saved_state = read_app_state_file()
         self.active_pull_down_value = 1.0
         self.active_horizontal_value = 0.0
         self.horizontal_delay_ms = 500
         self.horizontal_duration_ms = 2000
         self.is_enabled = False
         self.toggle_button = "M5"
-        self.current_config_file = DEFAULT_CONFIG_FILE
+        self.current_config_file = saved_state.get("current_config_file", DEFAULT_CONFIG_FILE)
+        if not os.path.exists(get_config_path(self.current_config_file)):
+            self.current_config_file = DEFAULT_CONFIG_FILE
+        self.selected_operator_name = ""
+        self.current_slot = "primary"  # "primary" or "secondary"
         self.lock = threading.Lock()
 
     def set_active_value(self, value):
@@ -160,6 +191,39 @@ class AppState:
         with self.lock:
             return self.current_config_file
 
+    def set_selected_operator_name(self, operator_name):
+        with self.lock:
+            self.selected_operator_name = operator_name
+            return self.selected_operator_name
+
+    def get_selected_operator_name(self):
+        with self.lock:
+            return self.selected_operator_name
+
+    def set_current_slot(self, slot):
+        with self.lock:
+            if slot in ["primary", "secondary"]:
+                self.current_slot = slot
+                return self.current_slot
+            return None
+
+    def get_current_slot(self):
+        with self.lock:
+            return self.current_slot
+
+    def apply_gun_config(self, config):
+        with self.lock:
+            self.active_pull_down_value = config["pull_down"]
+            self.active_horizontal_value = config["horizontal"]
+            self.horizontal_delay_ms = config["horizontal_delay_ms"]
+            self.horizontal_duration_ms = config["horizontal_duration_ms"]
+
+    def to_persisted_state(self):
+        with self.lock:
+            return {
+                "current_config_file": self.current_config_file,
+            }
+
     def get_status(self):
         with self.lock:
             return {
@@ -170,9 +234,93 @@ class AppState:
                 "horizontal_delay_ms": self.horizontal_delay_ms,
                 "horizontal_duration_ms": self.horizontal_duration_ms,
                 "current_config_file": self.current_config_file,
+                "selected_operator_name": self.selected_operator_name,
+                "current_slot": self.current_slot,
             }
 
+def normalize_gun_config(config):
+    if isinstance(config, dict):
+        return {
+            "pull_down": float(config.get("pull_down", 0)),
+            "horizontal": float(config.get("horizontal", 0)),
+            "horizontal_delay_ms": int(config.get("horizontal_delay_ms", 500)),
+            "horizontal_duration_ms": int(config.get("horizontal_duration_ms", 2000)),
+        }
+    return {
+        "pull_down": float(config or 0),
+        "horizontal": 0.0,
+        "horizontal_delay_ms": 500,
+        "horizontal_duration_ms": 2000,
+    }
+
+def get_user_configs(config_file=None):
+    configs = read_configs(config_file)
+    if not isinstance(configs, dict):
+        return {}
+    return {
+        operator_name: config
+        for operator_name, config in configs.items()
+        if operator_name != INTERNAL_CONFIG_STATE_KEY
+    }
+
+def persist_runtime_state(config_file=None):
+    if config_file is None:
+        config_file = app_state.get_current_config_file()
+
+    configs = read_configs(config_file)
+    if not isinstance(configs, dict):
+        configs = {}
+
+    status = app_state.get_status()
+    configs[INTERNAL_CONFIG_STATE_KEY] = {
+        "selected_operator_name": status["selected_operator_name"],
+        "current_slot": status["current_slot"],
+        "pull_down": status["pull_down"],
+        "horizontal": status["horizontal"],
+        "horizontal_delay_ms": status["horizontal_delay_ms"],
+        "horizontal_duration_ms": status["horizontal_duration_ms"],
+    }
+    write_configs(configs, config_file)
+
+def restore_runtime_state():
+    configs = read_configs(app_state.get_current_config_file())
+    if not isinstance(configs, dict):
+        return
+
+    state = configs.get(INTERNAL_CONFIG_STATE_KEY)
+    if not isinstance(state, dict):
+        return
+
+    app_state.set_selected_operator_name(state.get("selected_operator_name", ""))
+    app_state.set_current_slot(state.get("current_slot", "primary"))
+    app_state.apply_gun_config(normalize_gun_config(state))
+
+def save_app_state():
+    write_app_state_file(app_state.to_persisted_state())
+
+def restore_selected_config():
+    restore_runtime_state()
+
+    selected_operator_name = app_state.get_selected_operator_name()
+    if not selected_operator_name:
+        return
+
+    configs = get_user_configs(app_state.get_current_config_file())
+    saved_config = configs.get(selected_operator_name)
+    if saved_config is None:
+        app_state.set_selected_operator_name("")
+        persist_runtime_state()
+        save_app_state()
+        return
+
+    # Apply the current slot's config
+    current_slot = app_state.get_current_slot()
+    slot_config = saved_config.get(current_slot, {}).get("config", {})
+    if slot_config:
+        app_state.apply_gun_config(normalize_gun_config(slot_config))
+
 app_state = AppState()
+restore_selected_config()
 
 from contextlib import asynccontextmanager
 
@@ -214,7 +362,11 @@ def mouse_control_loop():
                 lmb_hold_start = now
 
             pull_value = app_state.get_active_value()
-            y_move = round((pull_value + random.uniform(-0.3, 0.3)) / 5) if pull_value > 0 else 0
+            # Add more human-like randomization
+            human_factor = random.uniform(0.85, 1.15)  # ±15% variation
+            pull_value *= human_factor
+            
+            y_move = round((pull_value + random.uniform(-0.5, 0.5)) / 5) if pull_value > 0 else 0
 
             x_move = 0
             hold_ms = (now - lmb_hold_start) * 1000
@@ -222,12 +374,18 @@ def mouse_control_loop():
             duration = app_state.get_horizontal_duration()
             if hold_ms >= delay and (duration == 0 or hold_ms <= delay + duration):
                 h_value = app_state.get_horizontal_value()
-                x_move = round((h_value + random.uniform(-0.3, 0.3)) / 5)
+                # Add horizontal randomization
+                h_human_factor = random.uniform(0.9, 1.1)  # ±10% variation
+                h_value *= h_human_factor
+                x_move = round((h_value + random.uniform(-0.4, 0.4)) / 5)
+
+            # Add hesitation and micro-pauses for more human feel
+            if random.random() < 0.08:  # 8% chance
+                time.sleep(random.uniform(0.015, 0.045))
+            elif random.random() < 0.03:  # 3% chance of longer pause
+                time.sleep(random.uniform(0.08, 0.15))
 
             if y_move != 0 or x_move != 0:
-                # Add human-like hesitation: 5% chance to delay
-                if random.random() < 0.05:
-                    time.sleep(random.uniform(0.01, 0.03))
                 makcu_controller.simple_move_mouse(x_move, y_move)
         else:
             lmb_hold_start = None
@@ -254,6 +412,7 @@ async def websocket_endpoint(websocket: WebSocket):
                         value = converter(msg[key])
                         method = getattr(app_state, f"set_{method}")
                         method(value)
+                persist_runtime_state()
             except (json.JSONDecodeError, ValueError, TypeError):
                 pass
     except WebSocketDisconnect:
@@ -283,6 +442,12 @@ async def set_toggle_button(config: ToggleButtonConfig):
 class ConfigFileRequest(BaseModel):
     filename: str
 
+class ActiveConfigRequest(BaseModel):
+    operator_name: str
+
+class SwitchSlotRequest(BaseModel):
+    slot: str  # "primary" or "secondary"
+
 @app.get("/config-files", response_class=JSONResponse)
 async def get_config_files():
     return {
@@ -304,39 +469,126 @@ async def switch_config_file(req: ConfigFileRequest):
     if not os.path.exists(filepath):
         raise HTTPException(status_code=404, detail="Config file not found.")
     app_state.set_current_config_file(filename)
-    return {"current_config_file": filename, "guns": read_configs(filename)}
+    configs = get_user_configs(filename)
+    if app_state.get_selected_operator_name() not in configs:
+        app_state.set_selected_operator_name("")
+    restore_selected_config()
+    save_app_state()
+    return {
+        "current_config_file": filename,
+        "operators": configs,
+        "selected_operator_name": app_state.get_selected_operator_name(),
+    }
 
 @app.delete("/config-files/{filename}", response_class=JSONResponse)
 async def delete_config_file_action(filename: str):
     delete_config_file(filename)
+    if app_state.get_current_config_file() == filename:
+        app_state.set_current_config_file(DEFAULT_CONFIG_FILE)
+        app_state.set_selected_gun_name("")
+        restore_selected_config()
+        persist_runtime_state()
+        save_app_state()
     return {"message": "Config file deleted.", "files": list_config_files()}
 
 @app.get("/configs", response_class=JSONResponse)
 async def get_configs():
-    return read_configs(app_state.get_current_config_file())
+    return get_user_configs(app_state.get_current_config_file())
 
-@app.post("/configs", response_class=JSONResponse)
-async def create_config(config: GunConfig):
+@app.post("/operators", response_class=JSONResponse)
+async def create_operator_config(config: OperatorConfig):
     current_file = app_state.get_current_config_file()
     configs = read_configs(current_file)
-    configs[config.gun_name] = {
-        "pull_down": config.pull_down_value,
-        "horizontal": config.horizontal_value,
-        "horizontal_delay_ms": config.horizontal_delay_ms,
-        "horizontal_duration_ms": config.horizontal_duration_ms,
+    configs[config.operator_name] = {
+        "primary": {
+            "gun_name": config.primary_gun,
+            "config": config.primary_config
+        },
+        "secondary": {
+            "gun_name": config.secondary_gun,
+            "config": config.secondary_config
+        }
     }
     write_configs(configs, current_file)
-    return {"message": "Config saved successfully."}
+    app_state.set_selected_operator_name(config.operator_name)
+    app_state.set_current_slot("primary")
+    app_state.apply_gun_config(normalize_gun_config(config.primary_config))
+    persist_runtime_state(current_file)
+    save_app_state()
+    return {"message": "Operator config saved successfully."}
 
-@app.delete("/configs/{gun_name}", response_class=JSONResponse)
-async def delete_config(gun_name: str):
+@app.post("/operators/activate", response_class=JSONResponse)
+async def activate_operator_config(req: ActiveConfigRequest):
+    current_file = app_state.get_current_config_file()
+    configs = get_user_configs(current_file)
+    if req.operator_name not in configs:
+        raise HTTPException(status_code=404, detail="Operator config not found.")
+
+    operator_config = configs[req.operator_name]
+    current_slot = app_state.get_current_slot()
+    slot_config = operator_config.get(current_slot, {}).get("config", {})
+    
+    if not slot_config:
+        raise HTTPException(status_code=404, detail=f"No config found for {current_slot} slot.")
+
+    normalized_config = normalize_gun_config(slot_config)
+    app_state.set_selected_operator_name(req.operator_name)
+    app_state.apply_gun_config(normalized_config)
+    persist_runtime_state(current_file)
+    save_app_state()
+
+    return {
+        "operator_name": req.operator_name,
+        "current_slot": current_slot,
+        **normalized_config,
+    }
+
+@app.post("/operators/switch-slot", response_class=JSONResponse)
+async def switch_slot(req: SwitchSlotRequest):
+    if req.slot not in ["primary", "secondary"]:
+        raise HTTPException(status_code=400, detail="Slot must be 'primary' or 'secondary'.")
+    
+    current_file = app_state.get_current_config_file()
+    selected_operator = app_state.get_selected_operator_name()
+    
+    if not selected_operator:
+        raise HTTPException(status_code=400, detail="No operator selected.")
+    
+    configs = get_user_configs(current_file)
+    if selected_operator not in configs:
+        raise HTTPException(status_code=404, detail="Operator config not found.")
+    
+    operator_config = configs[selected_operator]
+    slot_config = operator_config.get(req.slot, {}).get("config", {})
+    
+    if not slot_config:
+        raise HTTPException(status_code=404, detail=f"No config found for {req.slot} slot.")
+    
+    app_state.set_current_slot(req.slot)
+    app_state.apply_gun_config(normalize_gun_config(slot_config))
+    persist_runtime_state(current_file)
+    save_app_state()
+    
+    return {
+        "operator_name": selected_operator,
+        "current_slot": req.slot,
+        "gun_name": operator_config[req.slot]["gun_name"],
+        **normalize_gun_config(slot_config),
+    }
+
+@app.delete("/operators/{operator_name}", response_class=JSONResponse)
+async def delete_operator_config(operator_name: str):
     current_file = app_state.get_current_config_file()
     configs = read_configs(current_file)
-    if gun_name not in configs:
-        raise HTTPException(status_code=404, detail="Config not found.")
-    del configs[gun_name]
+    if operator_name not in configs:
+        raise HTTPException(status_code=404, detail="Operator config not found.")
+    del configs[operator_name]
     write_configs(configs, current_file)
-    return {"message": "Config deleted successfully."}
+    if app_state.get_selected_operator_name() == operator_name:
+        app_state.set_selected_operator_name("")
+        persist_runtime_state(current_file)
+        save_app_state()
+    return {"message": "Operator config deleted successfully."}
     
 @app.get("/", response_class=HTMLResponse)
 async def get():
@@ -657,7 +909,11 @@ async def get():
                 border-color: #2d3d6b;
                 color: #88aaff;
             }
-            .btn-overwrite:hover { background: #222a4a; border-color: #4466aa; }
+            .btn.active {
+                background: #1a4a1a;
+                border-color: #2d8a2d;
+                color: #63ff96;
+            }
 
             .card:nth-child(2) { animation: fadeInUp 0.5s ease-out 0.05s both; }
             .card:nth-child(3) { animation: fadeInUp 0.5s ease-out 0.1s both; }
@@ -745,6 +1001,17 @@ async def get():
 
             <div id="tab-settings" class="tab-content">
             <div class="card">
+                <div class="card-label">Operator Slot Config</div>
+                <div class="slot-buttons" style="display:flex;gap:8px;margin-bottom:12px;">
+                    <button class="btn" id="slot-primary-btn" style="flex:1;">Primary (1)</button>
+                    <button class="btn" id="slot-secondary-btn" style="flex:1;">Secondary (2)</button>
+                </div>
+                <div class="current-slot-display" style="font-size:0.8em;color:#666;margin-bottom:8px;">
+                    Current: <span id="current-slot-text">Primary</span> - <span id="current-gun-text">No operator selected</span>
+                </div>
+            </div>
+
+            <div class="card">
                 <div class="card-label">Game Config <span class="current-badge" id="current-config-badge"></span></div>
                 <div class="config-file-row">
                     <select id="config-files-dropdown"></select>
@@ -757,22 +1024,29 @@ async def get():
             </div>
 
             <div class="card">
-                <div class="card-label">Gun Config</div>
-                <input type="text" id="config-search" placeholder="Search guns..." style="width:100%;margin-bottom:8px;">
-                <select id="configs-dropdown"></select>
+                <div class="card-label">Operator Config</div>
+                <input type="text" id="operator-search" placeholder="Search operators..." style="width:100%;margin-bottom:8px;">
+                <select id="operators-dropdown"></select>
             </div>
 
             <div class="card">
-                <div class="card-label">Save Config</div>
+                <div class="card-label">Save Operator Config</div>
                 <div class="save-row">
-                    <input type="text" id="gun-name" placeholder="Gun name...">
-                    <button class="btn btn-save" id="save-btn">Save</button>
+                    <input type="text" id="operator-name" placeholder="Operator name...">
+                    <button class="btn btn-save" id="save-operator-btn">Save</button>
+                </div>
+                <div style="margin-top:8px;">
+                    <div style="display:flex;gap:4px;margin-bottom:4px;">
+                        <input type="text" id="primary-gun-name" placeholder="Primary gun..." style="flex:1;">
+                        <input type="text" id="secondary-gun-name" placeholder="Secondary gun..." style="flex:1;">
+                    </div>
+                    <div style="font-size:0.75em;color:#666;">Enter gun names for primary and secondary weapons</div>
                 </div>
             </div>
 
             <div class="card" style="text-align:center;display:flex;gap:8px;justify-content:center;">
-                <button class="btn btn-overwrite" id="overwrite-btn">Overwrite Selected</button>
-                <button class="btn btn-delete" id="delete-btn">Delete Selected</button>
+                <button class="btn btn-overwrite" id="overwrite-operator-btn">Overwrite Selected</button>
+                <button class="btn btn-delete" id="delete-operator-btn">Delete Selected</button>
             </div>
             </div>
         </div>
@@ -787,12 +1061,18 @@ async def get():
                 const delayValue = document.getElementById("delay-value");
                 const durationSlider = document.getElementById("duration-slider");
                 const durationValue = document.getElementById("duration-value");
-                const gunNameInput = document.getElementById("gun-name");
-                const saveBtn = document.getElementById("save-btn");
-                const deleteBtn = document.getElementById("delete-btn");
-                const overwriteBtn = document.getElementById("overwrite-btn");
-                const configsDropdown = document.getElementById("configs-dropdown");
-                const configSearch = document.getElementById("config-search");
+                const operatorNameInput = document.getElementById("operator-name");
+                const primaryGunNameInput = document.getElementById("primary-gun-name");
+                const secondaryGunNameInput = document.getElementById("secondary-gun-name");
+                const saveOperatorBtn = document.getElementById("save-operator-btn");
+                const deleteOperatorBtn = document.getElementById("delete-operator-btn");
+                const overwriteOperatorBtn = document.getElementById("overwrite-operator-btn");
+                const operatorsDropdown = document.getElementById("operators-dropdown");
+                const operatorSearch = document.getElementById("operator-search");
+                const slotPrimaryBtn = document.getElementById("slot-primary-btn");
+                const slotSecondaryBtn = document.getElementById("slot-secondary-btn");
+                const currentSlotText = document.getElementById("current-slot-text");
+                const currentGunText = document.getElementById("current-gun-text");
                 const toggleBtn = document.getElementById("toggle-btn");
                 const toggleButtonSelect = document.getElementById("toggle-button-select");
                 const configFilesDropdown = document.getElementById("config-files-dropdown");
@@ -800,6 +1080,7 @@ async def get():
                 const createConfigBtn = document.getElementById("create-config-btn");
                 const deleteConfigBtn = document.getElementById("delete-config-btn");
                 const currentConfigBadge = document.getElementById("current-config-badge");
+                let preferredOperatorName = '';
 
                 let ws;
                 function connectWs() {
@@ -830,10 +1111,12 @@ async def get():
                 syncPair(delaySlider, delayValue);
                 syncPair(durationSlider, durationValue);
                 toggleBtn.onclick = toggleStatus;
-                saveBtn.onclick = saveConfig;
-                deleteBtn.onclick = deleteConfig;
-                overwriteBtn.onclick = overwriteConfig;
-                configsDropdown.onchange = activateConfig;
+                saveOperatorBtn.onclick = saveOperatorConfig;
+                deleteOperatorBtn.onclick = deleteOperatorConfig;
+                overwriteOperatorBtn.onclick = overwriteOperatorConfig;
+                operatorsDropdown.onchange = activateOperatorConfig;
+                slotPrimaryBtn.onclick = () => switchSlot('primary');
+                slotSecondaryBtn.onclick = () => switchSlot('secondary');
                 toggleButtonSelect.onchange = changeToggleButton;
 
                 document.querySelectorAll('.tab').forEach(tab => {
@@ -855,6 +1138,8 @@ async def get():
                         updateToggleButton(data.is_enabled);
                         if (data.toggle_button) toggleButtonSelect.value = data.toggle_button;
                         if (data.current_config_file) currentConfigBadge.textContent = data.current_config_file.replace('.json', '');
+                        preferredOperatorName = data.selected_operator_name || preferredOperatorName;
+                        updateSlotDisplay(data.current_slot, data.selected_operator_name);
                     }).catch(() => {});
                 }
 
@@ -870,28 +1155,32 @@ async def get():
                     fetch('/toggle', { method: 'POST' }).then(r => r.json()).then(data => updateToggleButton(data.is_enabled)).catch(() => {});
                 }
 
-                let allGuns = [];
+                let allOperators = [];
 
-                function fetchConfigs() {
+                function fetchOperators() {
                     fetch('/configs').then(r => r.json()).then(data => {
-                        allGuns = Object.keys(data);
-                        filterConfigs();
+                        allOperators = Object.keys(data);
+                        filterOperators();
+                        if (preferredOperatorName && allOperators.includes(preferredOperatorName)) {
+                            operatorsDropdown.value = preferredOperatorName;
+                            activateOperatorConfig();
+                        }
                     }).catch(() => {});
                 }
 
-                function filterConfigs() {
-                    const q = configSearch.value.toLowerCase();
-                    const prev = configsDropdown.value;
-                    configsDropdown.innerHTML = '<option value="">-- Select a Gun --</option>';
-                    for (const gun of allGuns) {
-                        if (!q || gun.toLowerCase().includes(q)) {
+                function filterOperators() {
+                    const q = operatorSearch.value.toLowerCase();
+                    const prev = operatorsDropdown.value;
+                    operatorsDropdown.innerHTML = '<option value="">-- Select an Operator --</option>';
+                    for (const operator of allOperators) {
+                        if (!q || operator.toLowerCase().includes(q)) {
                             const option = document.createElement('option');
-                            option.value = gun;
-                            option.textContent = gun;
-                            configsDropdown.appendChild(option);
+                            option.value = operator;
+                            option.textContent = operator;
+                            operatorsDropdown.appendChild(option);
                         }
                     }
-                    configsDropdown.value = prev;
+                    operatorsDropdown.value = prev;
                 }
 
                 function fetchConfigFiles() {
@@ -926,11 +1215,8 @@ async def get():
                 function deleteConfigFile() {
                     const selectedFile = configFilesDropdown.value;
                     if (!selectedFile) return alert('Please select a config file to delete.');
-                    if (selectedFile === 'r6.json') return alert('Cannot delete default config.');
-                    if (confirm('Delete config file "' + selectedFile + '" and all its guns?')) {
-                        fetch('/config-files/' + encodeURIComponent(selectedFile), { method: 'DELETE' }).then(r => r.json()).then(data => {
-                            alert(data.message || data.detail);
-                            fetchConfigFiles();
+                    if (selectedFile === 'r6_operators.json') return alert('Cannot delete default config.');
+                    if (confirm('Delete config file "' + selectedFile + '" and all its operators?')) {
                         }).catch(() => alert('Failed to delete config.'));
                     }
                 }
@@ -944,9 +1230,15 @@ async def get():
                         body: JSON.stringify({ filename: selectedFile })
                     }).then(r => r.json()).then(data => {
                         currentConfigBadge.textContent = data.current_config_file.replace('.json', '');
-                        allGuns = Object.keys(data.guns);
-                        filterConfigs();
-                        configsDropdown.value = '';
+                        preferredOperatorName = data.selected_operator_name || '';
+                        allOperators = Object.keys(data.operators);
+                        filterOperators();
+                        if (preferredOperatorName && allOperators.includes(preferredOperatorName)) {
+                            operatorsDropdown.value = preferredOperatorName;
+                            activateOperatorConfig();
+                        } else {
+                            operatorsDropdown.value = '';
+                        }
                     }).catch(() => alert('Failed to switch config.'));
                 }
 
@@ -954,92 +1246,172 @@ async def get():
                 createConfigBtn.onclick = createConfigFile;
                 deleteConfigBtn.onclick = deleteConfigFile;
 
-                configSearch.oninput = filterConfigs;
+                operatorSearch.oninput = filterOperators;
 
-                function saveConfig() {
-                    const gunName = gunNameInput.value.trim();
-                    if (!gunName) return alert('Please enter a gun name.');
-                    fetch('/configs', {
+                function updateSlotDisplay(slot, operatorName) {
+                    const slotText = slot === 'primary' ? 'Primary' : 'Secondary';
+                    currentSlotText.textContent = slotText;
+                    
+                    if (operatorName) {
+                        fetch('/configs').then(r => r.json()).then(data => {
+                            const operatorConfig = data[operatorName];
+                            if (operatorConfig && operatorConfig[slot]) {
+                                currentGunText.textContent = operatorConfig[slot].gun_name;
+                            } else {
+                                currentGunText.textContent = 'No config';
+                            }
+                        });
+                    } else {
+                        currentGunText.textContent = 'No operator selected';
+                    }
+                    
+                    // Update button styles
+                    slotPrimaryBtn.classList.toggle('active', slot === 'primary');
+                    slotSecondaryBtn.classList.toggle('active', slot === 'secondary');
+                }
+
+                function switchSlot(slot) {
+                    fetch('/operators/switch-slot', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ slot: slot })
+                    }).then(r => r.json()).then(data => {
+                        preferredOperatorName = data.operator_name;
+                        sliderValue.value = data.pull_down;
+                        hValue.value = data.horizontal;
+                        delayValue.value = data.horizontal_delay_ms;
+                        durationValue.value = data.horizontal_duration_ms;
+                        slider.value = Math.round(data.pull_down);
+                        hSlider.value = Math.round(data.horizontal);
+                        delaySlider.value = data.horizontal_delay_ms;
+                        durationSlider.value = data.horizontal_duration_ms;
+                        updateSlotDisplay(data.current_slot, data.operator_name);
+                        sendAll();
+                    }).catch(() => alert('Failed to switch slot.'));
+                }
+
+                function saveOperatorConfig() {
+                    const operatorName = operatorNameInput.value.trim();
+                    const primaryGun = primaryGunNameInput.value.trim();
+                    const secondaryGun = secondaryGunNameInput.value.trim();
+                    
+                    if (!operatorName) return alert('Please enter an operator name.');
+                    if (!primaryGun || !secondaryGun) return alert('Please enter both primary and secondary gun names.');
+                    
+                    fetch('/operators', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                            gun_name: gunName,
-                            pull_down_value: parseFloat(sliderValue.value) || 0,
-                            horizontal_value: parseFloat(hValue.value) || 0,
-                            horizontal_delay_ms: parseInt(delayValue.value) || 0,
-                            horizontal_duration_ms: parseInt(durationValue.value) || 0
+                            operator_name: operatorName,
+                            primary_gun: primaryGun,
+                            primary_config: {
+                                pull_down: parseFloat(sliderValue.value) || 0,
+                                horizontal: parseFloat(hValue.value) || 0,
+                                horizontal_delay_ms: parseInt(delayValue.value) || 0,
+                                horizontal_duration_ms: parseInt(durationValue.value) || 0
+                            },
+                            secondary_gun: secondaryGun,
+                            secondary_config: {
+                                pull_down: parseFloat(sliderValue.value) || 0,
+                                horizontal: parseFloat(hValue.value) || 0,
+                                horizontal_delay_ms: parseInt(delayValue.value) || 0,
+                                horizontal_duration_ms: parseInt(durationValue.value) || 0
+                            }
                         })
                     }).then(r => r.json()).then(data => {
                         alert(data.message || data.detail);
-                        fetchConfigs();
-                        gunNameInput.value = '';
-                    }).catch(() => alert('Failed to save config.'));
+                        preferredOperatorName = operatorName;
+                        fetchOperators();
+                        operatorsDropdown.value = operatorName;
+                        updateSlotDisplay('primary', operatorName);
+                    }).catch(() => alert('Failed to save operator config.'));
                 }
 
-                function deleteConfig() {
-                    const selectedGun = configsDropdown.value;
-                    if (!selectedGun) return alert('Please select a config to delete.');
-                    if (confirm('Delete config for ' + selectedGun + '?')) {
-                        fetch('/configs/' + encodeURIComponent(selectedGun), { method: 'DELETE' }).then(r => r.json()).then(data => {
+                function deleteOperatorConfig() {
+                    const selectedOperator = operatorsDropdown.value;
+                    if (!selectedOperator) return alert('Please select an operator config to delete.');
+                    if (confirm('Delete config for ' + selectedOperator + '?')) {
+                        fetch('/operators/' + encodeURIComponent(selectedOperator), { method: 'DELETE' }).then(r => r.json()).then(data => {
                             alert(data.message || data.detail);
-                            fetchConfigs();
-                        }).catch(() => alert('Failed to delete config.'));
+                            if (preferredOperatorName === selectedOperator) preferredOperatorName = '';
+                            fetchOperators();
+                            updateSlotDisplay('', '');
+                        }).catch(() => alert('Failed to delete operator config.'));
                     }
                 }
 
-                function overwriteConfig() {
-                    const selectedGun = configsDropdown.value;
-                    if (!selectedGun) return alert('Please select a config to overwrite.');
-                    if (confirm('Overwrite config for ' + selectedGun + ' with current values?')) {
-                        fetch('/configs', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                                gun_name: selectedGun,
-                                pull_down_value: parseFloat(sliderValue.value) || 0,
-                                horizontal_value: parseFloat(hValue.value) || 0,
-                                horizontal_delay_ms: parseInt(delayValue.value) || 0,
-                                horizontal_duration_ms: parseInt(durationValue.value) || 0
-                            })
-                        }).then(r => r.json()).then(data => {
-                            alert(data.message || data.detail);
-                        }).catch(() => alert('Failed to overwrite config.'));
-                    }
-                }
-
-                function activateConfig() {
-                    const selectedGun = configsDropdown.value;
-                    if (!selectedGun) return;
+                function overwriteOperatorConfig() {
+                    const selectedOperator = operatorsDropdown.value;
+                    if (!selectedOperator) return alert('Please select an operator config to overwrite.');
+                    
                     fetch('/configs').then(r => r.json()).then(data => {
-                        const cfg = data[selectedGun];
-                        let pd, hz, dl, du;
-                        if (typeof cfg === 'object') {
-                            pd = cfg.pull_down ?? 0;
-                            hz = cfg.horizontal ?? 0;
-                            dl = cfg.horizontal_delay_ms ?? 500;
-                            du = cfg.horizontal_duration_ms ?? 2000;
-                        } else {
-                            pd = cfg ?? 0;
-                            hz = 0;
-                            dl = 500;
-                            du = 2000;
+                        const existingConfig = data[selectedOperator];
+                        if (!existingConfig) return alert('Operator config not found.');
+                        
+                        const currentSlot = currentSlotText.textContent.toLowerCase();
+                        const gunName = currentGunText.textContent;
+                        
+                        if (confirm('Overwrite ' + currentSlot + ' config for ' + selectedOperator + ' with current values?')) {
+                            const newConfig = {
+                                operator_name: selectedOperator,
+                                primary_gun: existingConfig.primary.gun_name,
+                                primary_config: currentSlot === 'primary' ? {
+                                    pull_down: parseFloat(sliderValue.value) || 0,
+                                    horizontal: parseFloat(hValue.value) || 0,
+                                    horizontal_delay_ms: parseInt(delayValue.value) || 0,
+                                    horizontal_duration_ms: parseInt(durationValue.value) || 0
+                                } : existingConfig.primary.config,
+                                secondary_gun: existingConfig.secondary.gun_name,
+                                secondary_config: currentSlot === 'secondary' ? {
+                                    pull_down: parseFloat(sliderValue.value) || 0,
+                                    horizontal: parseFloat(hValue.value) || 0,
+                                    horizontal_delay_ms: parseInt(delayValue.value) || 0,
+                                    horizontal_duration_ms: parseInt(durationValue.value) || 0
+                                } : existingConfig.secondary.config
+                            };
+                            
+                            fetch('/operators', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify(newConfig)
+                            }).then(r => r.json()).then(data => {
+                                alert(data.message || data.detail);
+                            }).catch(() => alert('Failed to overwrite operator config.'));
                         }
-                        sliderValue.value = pd;
-                        hValue.value = hz;
-                        delayValue.value = dl;
-                        durationValue.value = du;
-                        slider.value = Math.round(pd);
-                        hSlider.value = Math.round(hz);
-                        delaySlider.value = dl;
-                        durationSlider.value = du;
+                    }).catch(() => alert('Failed to fetch existing config.'));
+                }
+
+                function activateOperatorConfig() {
+                    const selectedOperator = operatorsDropdown.value;
+                    if (!selectedOperator) return;
+                    fetch('/operators/activate', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ operator_name: selectedOperator })
+                    }).then(r => r.json()).then(data => {
+                        preferredOperatorName = data.operator_name;
+                        sliderValue.value = data.pull_down;
+                        hValue.value = data.horizontal;
+                        delayValue.value = data.horizontal_delay_ms;
+                        durationValue.value = data.horizontal_duration_ms;
+                        slider.value = Math.round(data.pull_down);
+                        hSlider.value = Math.round(data.horizontal);
+                        delaySlider.value = data.horizontal_delay_ms;
+                        durationSlider.value = data.horizontal_duration_ms;
+                        updateSlotDisplay(data.current_slot, data.operator_name);
                         sendAll();
                     }).catch(() => {});
                 }
 
-                getStatus();
-                fetchConfigs();
-                fetchConfigFiles();
-                setInterval(getStatus, 500);
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === '1' && !e.ctrlKey && !e.altKey && !e.metaKey) {
+                        e.preventDefault();
+                        switchSlot('primary');
+                    } else if (e.key === '2' && !e.ctrlKey && !e.altKey && !e.metaKey) {
+                        e.preventDefault();
+                        switchSlot('secondary');
+                    }
+                });
             });
         </script>
     </body>

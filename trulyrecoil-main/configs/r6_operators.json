@@ -1,0 +1,1502 @@
+{
+    "Ace": {
+        "primary": {
+            "gun_name": "AK-12",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "P9",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Amaru": {
+        "primary": {
+            "gun_name": "G8A1",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "ITA12S",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Ash": {
+        "primary": {
+            "gun_name": "G36C",
+            "config": {
+                "pull_down": 80.0,
+                "horizontal": 6.0,
+                "horizontal_delay_ms": 0,
+                "horizontal_duration_ms": 0
+            }
+        },
+        "secondary": {
+            "gun_name": "5.7 USG",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Blackbeard": {
+        "primary": {
+            "gun_name": "MK17 CQB",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "D-50",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Blitz": {
+        "primary": {
+            "gun_name": "G52-Tactical Shield",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "P12",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Brava": {
+        "primary": {
+            "gun_name": "PARA-308",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "Super 90",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Buck": {
+        "primary": {
+            "gun_name": "C8-SFW",
+            "config": {
+                "pull_down": 100.0,
+                "horizontal": -4.0,
+                "horizontal_delay_ms": 44,
+                "horizontal_duration_ms": 0
+            }
+        },
+        "secondary": {
+            "gun_name": "MK1 9mm",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Capit\u00e3o": {
+        "primary": {
+            "gun_name": "PARA-308",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "M249",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Deimos": {
+        "primary": {
+            "gun_name": "AK-74M",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": ".44 Mag Semi-Auto",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Dokkaebi": {
+        "primary": {
+            "gun_name": "MK 14 EBR",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "C75 Auto",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Finka": {
+        "primary": {
+            "gun_name": "Spear .308",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "6P41",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Flores": {
+        "primary": {
+            "gun_name": "AR33",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "SR-25",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Fuze": {
+        "primary": {
+            "gun_name": "Ballistic Shield",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "GSH-18",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Glaz": {
+        "primary": {
+            "gun_name": "OTS-03",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "PMM",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Gridlock": {
+        "primary": {
+            "gun_name": "F90",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "Super 90",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Grim": {
+        "primary": {
+            "gun_name": "552 Commando",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "9x19VSN",
+            "config": {
+                "pull_down": 38.0,
+                "horizontal": -3.0,
+                "horizontal_delay_ms": 0,
+                "horizontal_duration_ms": 0
+            }
+        }
+    },
+    "Hibana": {
+        "primary": {
+            "gun_name": "Type-89",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "P229",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Iana": {
+        "primary": {
+            "gun_name": "ARX200",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "G36C",
+            "config": {
+                "pull_down": 80.0,
+                "horizontal": 6.0,
+                "horizontal_delay_ms": 0,
+                "horizontal_duration_ms": 0
+            }
+        }
+    },
+    "IQ": {
+        "primary": {
+            "gun_name": "AUG A2",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "5.7 USG",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Jackal": {
+        "primary": {
+            "gun_name": "C8-SFW",
+            "config": {
+                "pull_down": 100.0,
+                "horizontal": -4.0,
+                "horizontal_delay_ms": 44,
+                "horizontal_duration_ms": 0
+            }
+        },
+        "secondary": {
+            "gun_name": "ITA12S",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Kali": {
+        "primary": {
+            "gun_name": "CSRX 300",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "C75 Auto",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Lion": {
+        "primary": {
+            "gun_name": "V308",
+            "config": {
+                "pull_down": 72.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 0,
+                "horizontal_duration_ms": 0
+            }
+        },
+        "secondary": {
+            "gun_name": "P9",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Maverick": {
+        "primary": {
+            "gun_name": "M4",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "1911 TACOPS",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Montagne": {
+        "primary": {
+            "gun_name": "Le Roc Shield",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "P9",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Nomad": {
+        "primary": {
+            "gun_name": "AK-74M",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": ".44 Mag Semi-Auto",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "N\u00f8kk": {
+        "primary": {
+            "gun_name": "FMG-9",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "5.7 USG",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Osa": {
+        "primary": {
+            "gun_name": "556XI",
+            "config": {
+                "pull_down": 61.0,
+                "horizontal": 8.0,
+                "horizontal_delay_ms": 0,
+                "horizontal_duration_ms": 0
+            }
+        },
+        "secondary": {
+            "gun_name": "PMM",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Ram": {
+        "primary": {
+            "gun_name": "R4-C",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "MK1 9mm",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Rauora": {
+        "primary": {
+            "gun_name": "C8-SFW",
+            "config": {
+                "pull_down": 100.0,
+                "horizontal": -4.0,
+                "horizontal_delay_ms": 44,
+                "horizontal_duration_ms": 0
+            }
+        },
+        "secondary": {
+            "gun_name": "PRB92",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Sens": {
+        "primary": {
+            "gun_name": "POF-9",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "SG-CQB",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Sledge": {
+        "primary": {
+            "gun_name": "L85A2",
+            "config": {
+                "pull_down": 65.0,
+                "horizontal": 10.0,
+                "horizontal_delay_ms": 0,
+                "horizontal_duration_ms": 0
+            }
+        },
+        "secondary": {
+            "gun_name": "P226 MK 25",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Solid Snake": {
+        "primary": {
+            "gun_name": "SOCOM16",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "1911 TACOPS",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Striker": {
+        "primary": {
+            "gun_name": "M4",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "5.7 USG",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Thatcher": {
+        "primary": {
+            "gun_name": "L85A2",
+            "config": {
+                "pull_down": 65.0,
+                "horizontal": 10.0,
+                "horizontal_delay_ms": 0,
+                "horizontal_duration_ms": 0
+            }
+        },
+        "secondary": {
+            "gun_name": "M590A1",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Thermite": {
+        "primary": {
+            "gun_name": "556XI",
+            "config": {
+                "pull_down": 61.0,
+                "horizontal": 8.0,
+                "horizontal_delay_ms": 0,
+                "horizontal_duration_ms": 0
+            }
+        },
+        "secondary": {
+            "gun_name": "5.7 USG",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Twitch": {
+        "primary": {
+            "gun_name": "F2",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "P9",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Ying": {
+        "primary": {
+            "gun_name": "T-95 LSW",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "Six12",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Zero": {
+        "primary": {
+            "gun_name": "SC3000K",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "5.7 USG",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Zofia": {
+        "primary": {
+            "gun_name": "LMG-E",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "RG15",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Alibi": {
+        "primary": {
+            "gun_name": "Mx4 Storm",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "Keratos .357",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Aruni": {
+        "primary": {
+            "gun_name": "P10 RONI",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "MK1 9mm",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Azami": {
+        "primary": {
+            "gun_name": "9x19VSN",
+            "config": {
+                "pull_down": 38.0,
+                "horizontal": -3.0,
+                "horizontal_delay_ms": 0,
+                "horizontal_duration_ms": 0
+            }
+        },
+        "secondary": {
+            "gun_name": "D-50",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Bandit": {
+        "primary": {
+            "gun_name": "MP7",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "5.7 USG",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Caveira": {
+        "primary": {
+            "gun_name": "M12",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "Luison",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Clash": {
+        "primary": {
+            "gun_name": "CCE Shield",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "Super 90",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Doc": {
+        "primary": {
+            "gun_name": "SG-CQB",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "P9",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Echo": {
+        "primary": {
+            "gun_name": "MP5SD",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "Super 90",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Ela": {
+        "primary": {
+            "gun_name": "Scorpion EVO 3 A1",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "RG15",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Fenrir": {
+        "primary": {
+            "gun_name": "MP7",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "5.7 USG",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Frost": {
+        "primary": {
+            "gun_name": "Super 90",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "9mm C1",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Goyo": {
+        "primary": {
+            "gun_name": "Vector .45 ACP",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "ITA12S",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "J\u00e4ger": {
+        "primary": {
+            "gun_name": "M870",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "P12",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Kaid": {
+        "primary": {
+            "gun_name": "AUG A3",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": ".44 Mag Semi-Auto",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Kapkan": {
+        "primary": {
+            "gun_name": "9x19VSN",
+            "config": {
+                "pull_down": 38.0,
+                "horizontal": -3.0,
+                "horizontal_delay_ms": 0,
+                "horizontal_duration_ms": 0
+            }
+        },
+        "secondary": {
+            "gun_name": "SASG-12",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Lesion": {
+        "primary": {
+            "gun_name": "T-5 SMG",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "Q-929",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Maestro": {
+        "primary": {
+            "gun_name": "ALDA 5.56",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "Bailiff 410",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Melusi": {
+        "primary": {
+            "gun_name": "MP5",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "Super 90",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Mira": {
+        "primary": {
+            "gun_name": "Vector .45 ACP",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "ITA12S",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Mozzie": {
+        "primary": {
+            "gun_name": "Commando 9",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "P226 MK 25",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Mute": {
+        "primary": {
+            "gun_name": "MP5K",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "P226 MK 25",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Oryx": {
+        "primary": {
+            "gun_name": "T-5 SMG",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "Bailiff 410",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Pulse": {
+        "primary": {
+            "gun_name": "UMP45",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "5.7 USG",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Rook": {
+        "primary": {
+            "gun_name": "SG-CQB",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "P9",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Sentry": {
+        "primary": {
+            "gun_name": "M870",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "C75 Auto",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Skop\u00f3s": {
+        "primary": {
+            "gun_name": "Bailiff 410",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "P90",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Solis": {
+        "primary": {
+            "gun_name": "ITA12L",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "Super 90",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Smoke": {
+        "primary": {
+            "gun_name": "FMG-9",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "P226 MK 25",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Tachanka": {
+        "primary": {
+            "gun_name": "DP27",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "GSH-18",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Thorn": {
+        "primary": {
+            "gun_name": "UZK50GI",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "1911 TACOPS",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Thunderbird": {
+        "primary": {
+            "gun_name": "Spear .308",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "Q-929",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Tubar\u00e3o": {
+        "primary": {
+            "gun_name": "MPX",
+            "config": {
+                "pull_down": 34.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 0,
+                "horizontal_duration_ms": 0
+            }
+        },
+        "secondary": {
+            "gun_name": "P12",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Valkyrie": {
+        "primary": {
+            "gun_name": "MPX",
+            "config": {
+                "pull_down": 34.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 0,
+                "horizontal_duration_ms": 0
+            }
+        },
+        "secondary": {
+            "gun_name": "D-50",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Vigil": {
+        "primary": {
+            "gun_name": "K1A",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "C75 Auto",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Wamai": {
+        "primary": {
+            "gun_name": "AUG A2",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        },
+        "secondary": {
+            "gun_name": "Keratos .357",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    },
+    "Warden": {
+        "primary": {
+            "gun_name": "MPX",
+            "config": {
+                "pull_down": 34.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 0,
+                "horizontal_duration_ms": 0
+            }
+        },
+        "secondary": {
+            "gun_name": "P-10C",
+            "config": {
+                "pull_down": 50.0,
+                "horizontal": 0.0,
+                "horizontal_delay_ms": 500,
+                "horizontal_duration_ms": 2000
+            }
+        }
+    }
+}

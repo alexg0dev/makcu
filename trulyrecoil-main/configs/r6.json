@@ -208,5 +208,12 @@
         "horizontal": 0.0,
         "horizontal_delay_ms": 0,
         "horizontal_duration_ms": 0
+    },
+    "__app_state__": {
+        "selected_gun_name": "",
+        "pull_down": 1.0,
+        "horizontal": 0.0,
+        "horizontal_delay_ms": 500,
+        "horizontal_duration_ms": 2000
     }
 }
